@@ -1,4 +1,4 @@
-﻿@model Product
+﻿@model Product[]
 @{
 	Layout = "_Layout";
 	ViewBag.Title = "Product Name";
@@ -16,26 +16,57 @@
 </html>
 
 *@
-
+@*
 <div data-productid="@Model.ProductId" data-stocklevel="@ViewBag.StockLevel" >
 	<p>Product Name:  @Model.ProductName</p>
 	<p>Product Price:  @($"{Model.Price:c2}")</p>
 	<p>Stock Level: 
-		@switch ((int)ViewBag.StockLevel)
+		@switch ((int)ViewBag.stocklevel)
 		{
 			case 0:
-				@:Out of stock
+				@:out of stock
 				break;
 			case 1:
 			case 2:
 			case 3:
-				<b>Low stock (@ViewBag.StockLevel)</b>
+				<b>low stock (@ViewBag.stocklevel)</b>
 				break;
 			default:
-				@:ViewBag.StockLevel in Stock
+				@:@ViewBag.stocklevel in stock
 				break;
 
+		}
+		@if (ViewBag.StockLevel == 0)
+		{
+			@:Out of stock
+		}
+		else if (ViewBag.StockLevel > 0 && ViewBag.StockLevel <= 3)
+		{
+			<b>low stock (@ViewBag.stocklevel)</b>
+		}
+		else
+		{
+			@:@ViewBag.stocklevel in stock
 		}
 	</p>
 </div>
 
+*@
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th><th>Price</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(Product p in Model)
+		{
+			<tr>
+				<td>@p.ProductName</td>
+				<td>@($"{p.Price:c2}")</td>
+			</tr>
+		}
+	</tbody>
+
+</table>
